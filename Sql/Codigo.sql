@@ -6,9 +6,9 @@ create table Clientes (
 	Id_cliente int(3) unsigned auto_increment primary key,
     Nombre varchar (50),
     Apellido varchar (50),
-    DNI varchar (20),
+    DNI int(11),
     Localidad varchar (200),
-    telefono varchar (20)
+    telefono int(11)
 );
 
 create table Categorias (
