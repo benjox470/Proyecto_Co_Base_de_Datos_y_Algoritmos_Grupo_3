@@ -16,9 +16,15 @@ create table Categorias (
     descripcion varchar (100)
 );
 
+create table Marcas (
+	Id_marca int(3) unsigned auto_increment primary key,
+    nombre varchar (100)
+);
+
 create table Medicamentos (
 	Id_medicamento int (3) unsigned auto_increment primary key,
     Id_Cate int(3) unsigned ,
+	id_marc int (3) unsigned,
     Nombre varchar (50),
     Precio decimal (10,2),
     stock int(3),
@@ -26,7 +32,8 @@ create table Medicamentos (
     receta enum ("SI","NO"),
     fecha_caducidad date,
     fecha_produccion date,
-    foreign key (Id_Cate) references Categorias (Id_Categoria)
+    foreign key (Id_Cate) references Categorias (Id_Categoria),
+	foreign key (id_marc) references Marcas (Id_marca)
 );
 
 create table Elementos_gondola (
