@@ -11,7 +11,7 @@ create table Elementos_gondola (
 
 
 
-insert into Elementos_Fondo (id_medicamento, descripcion) values
+insert into  Elementos_Fondo (id_medicamento, descripcion) values
 (2,"disponibles"),
 (4,"disponibles"),
 (5,"no disponible"),
