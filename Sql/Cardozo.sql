@@ -2,18 +2,17 @@ create table Elementos_gondola (
 	Id_gondola int (3) unsigned auto_increment primary key,
     Id_medicamentos int (3) unsigned,
 
-(2,"taquilla llena"),
-(4,"taquilla llena"),
-(5,"disponible"),
-(2, "disponible"),
-(4, "taquilla llena");
+(2,"no necesitan receta"),
+(4,"no necesitan receta"),
+(5,"necesitan receta"),
+(2, "no necesitan receta"),
+(4, "no necesitan receta");
 
 
 
 
-insert into  Elementos_Fondo (id_medicamento, descripcion) values
-(2,"disponibles"),
-(4,"disponibles"),
-(5,"no disponible"),
-(2,"disponible"),
-(4, "no disponible");
+insert into Elementos_Fondo (id_medicamento, descripcion) values
+(1,"no necesitan receta"),
+(5,"no necesitan receta"),
+(1,"necesitan receta"),
+
