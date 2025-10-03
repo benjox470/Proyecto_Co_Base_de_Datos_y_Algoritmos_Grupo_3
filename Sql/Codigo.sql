@@ -133,14 +133,84 @@ create table Roles (
     descripcion varchar (100)
 );
 
+insert into Roles(descripcion) values
+("Lavador"),
+("Seguridad"),
+("Especialista en sistemas de gestion farmaceutica"),
+("Ventas"),
+("Encargado de inventario"),
+("Analista de datos clinicos"),
+("Gerente de farmacia"),
+("Especialista en atencion al cliente farmaceutica"),
+("Coordinador de compras"),
+("Farmaceutico"),
+("Bioquimico"),
+("Asistente administrativo"),
+("Soporte tecnico"),
+("Analista de datos clinicos"),
+("Recepcionista de pedidos");
+
+create table sectores (
+	id_sector int (3) unsigned auto_increment primary key,
+    nombre varchar (100)
+);
+
+insert into sectores(nombre) values
+("Deposito de medicamentos"),
+("Laboratorio de formulacion magistral"),
+("Sala de control de calidad"),
+("Frente"),
+("Area de facturacion y convenios"),
+("Sala de reuniones o capacitacion"),
+("Oficina de administracion"),
+("Area de recursos humanos"),
+("Departamento de compras"),
+("Sector de refrigeracion"),
+("Zona de productos vencidos o en cuarentena"),
+("Area de recepcion de mercaderia"),
+("Sector de devoluciones"),
+("Sector de almacenamiento de psicotropicos"),
+("Sala de preparacion de pedidos");
 create table Empleados (
 	Id_empleado int(3) unsigned auto_increment primary key,
     Id_role int(3) unsigned,
     Nombre varchar (50),
     Sueldo decimal (10,2),
-    Sector varchar (200),
-    foreign key (Id_role) references Roles (Id_rol)
+    Sector int (3) unsigned,
+    foreign key (Id_role) references Roles (Id_rol),
+    foreign key (Sector) references sectores (id_sector)
 );
+
+insert into Empleados(Id_role, Nombre, Sueldo, Sector)
+values(1, "Norberto González", 2500.1, 1);
+insert into Empleados(Id_role, Nombre, Sueldo, Sector)
+values(2, "Ana María Soldano", 2100.22, 2);
+insert into Empleados(Id_role, Nombre, Sueldo, Sector)
+values(3, "Marcos Alonso De las Nieves", 1905.12, 3);
+insert into Empleados(Id_role, Nombre, Sueldo, Sector)
+values(4, "Gonzalo Agustín Celman", 2410.0, 4);
+insert into Empleados(Id_role, Nombre, Sueldo, Sector)
+values(5, "Juana Sofía Meza", 1420.66, 5);
+insert into Empleados(Id_role, Nombre, Sueldo, Sector)
+values(6, "Lucio Sepeda", 3000.50, 6);
+insert into Empleados(Id_role, Nombre, Sueldo, Sector)
+values(7, "Manuela Castillo", 1780.0, 7);
+insert into Empleados(Id_role, Nombre, Sueldo, Sector)
+values(8, "Manuela Castillo", 2850.0, 8);
+insert into Empleados(Id_role, Nombre, Sueldo, Sector)
+values(9, "Miguel Velázquez", 2000.3, 9);
+insert into Empleados(Id_role, Nombre, Sueldo, Sector)
+values(10, "Carmen María Blázquez", 3000.12, 10);
+insert into Empleados(Id_role, Nombre, Sueldo, Sector)
+values(11, "Denis Ferrandis", 2390.1, 11);
+insert into Empleados(Id_role, Nombre, Sueldo, Sector)
+values(12, "Ana Isabel Gabasa", 2005.44, 12);
+insert into Empleados(Id_role, Nombre, Sueldo, Sector)
+values(13, "Juan Francisco Torres", 1600.33, 13);
+insert into Empleados(Id_role, Nombre, Sueldo, Sector)
+values(14, "Yasmin Alcaide", 2300.33, 14);
+insert into Empleados(Id_role, Nombre, Sueldo, Sector)
+values(15, "Eric García", 1802.14, 15);
 
 create table Ventas (
 	Id_venta int(3) unsigned auto_increment primary key,
@@ -154,7 +224,7 @@ create table Ventas (
     foreign key (Id_empleados) references Empleados (Id_empleado)
 );
 
-insert into Ventas(Id_Medicamento,Id_Clientes,Id_Empleados,Fecha_yhora,cantdad)
+insert into Ventas(Id_medicamentos,Id_Clientes,Id_Empleados,Fecha_yhora,cantidad)
 values (8,4,4,"2025-9-23 15:30:45",2), 
 (3,4,4,"2025-9-23 9:02:10",1),
 (6,2,4,"2025-9-22 4:39:42",1),
