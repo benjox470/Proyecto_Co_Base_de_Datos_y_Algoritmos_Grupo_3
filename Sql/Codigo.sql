@@ -128,6 +128,24 @@ create table Historial_compras (
     foreign key (Id_client) references Clientes (Id_cliente)
 );
 
+insert into Historial_compras (Id_client,Id_med,fecha)
+values(1,5,"2025-6-21"),
+(4,9,"2025-6-17"),
+(6,2,"2025-6-14"),
+(7,5,"2025-6-14"),
+(1,5,"2025-6-14"),
+(4,8,"2025-6-12"),
+(1,3,"2025-6-12"),
+(2,2,"2025-6-10"),
+(6,9,"2025-6-8"),
+(1,5,"2025-6-7"),
+(4,15,"2025-6-7"),
+(6,6,"2025-6-6"),
+(13,3,"2025-6-5"),
+(1,5,"2025-6-1"),
+(4,14,"2025-5-30");
+
+
 create table Roles (
 	Id_rol int(3) unsigned auto_increment primary key,
     descripcion varchar (100)
