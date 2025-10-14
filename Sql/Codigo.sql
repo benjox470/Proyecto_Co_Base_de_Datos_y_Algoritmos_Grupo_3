@@ -111,6 +111,16 @@ create table Elementos_gondola (
     Descripcion varchar (100),
     foreign key (Id_medicamentos) references Medicamentos (Id_medicamento)
 );
+-- Los medicamentos que dicen NO 1,2,5,8,9,10,13,14
+insert into Elementos_gondola (Id_medicamentos,Descripcion) values
+(1,"No requiere receta."),
+(2,"No requiere receta."),
+(5,"No requiere receta."),
+(8,"No requiere receta."),
+(9,"No requiere receta."),
+(10,"No requiere receta."),
+(13,"No requiere receta."),
+(14,"No requiere receta.");
 
 create table Elementos_Fondo (
 	Id_Fondo int (3) unsigned auto_increment primary key,
@@ -118,6 +128,15 @@ create table Elementos_Fondo (
     Descripcion varchar (100),
     foreign key (Id_medicamen) references Medicamentos (Id_medicamento)
 );
+
+insert into Elementos_Fondo (Id_medicamen,Descripcion) values
+(3,"Si requiere receta."),
+(4,"Si requiere receta."),
+(6,"Si requiere receta."),
+(7,"Si requiere receta."),
+(11,"Si requiere receta."),
+(12,"Si requiere receta."),
+(15,"Si requiere receta.");
 
 create table Historial_compras (
 	Id_compras int (3) unsigned auto_increment primary key,
