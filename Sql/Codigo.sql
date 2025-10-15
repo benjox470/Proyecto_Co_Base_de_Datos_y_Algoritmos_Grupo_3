@@ -171,7 +171,7 @@ create table Roles (
 );
 
 insert into Roles(descripcion) values
-("Lavador"),
+("Limpieza"),
 ("Seguridad"),
 ("Especialista en sistemas de gestion farmaceutica"),
 ("Ventas"),
