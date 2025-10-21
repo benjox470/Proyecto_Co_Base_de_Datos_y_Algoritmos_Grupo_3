@@ -14,3 +14,10 @@ from Clientes
 inner join Historial_compras on  Historial_compras.Id_client=Clientes.Id_cliente
 group by Historial_compras.Id_client
 having  "Compras totales">5;
+
+select *
+from Empleados;
+
+select Elementos_gondola.Descripcion , Medicamentos.Nombre
+from Elementos_gondola
+inner join Medicamentos on  Medicamentos.Id_medicamento=Elementos_gondola.Id_medicamentos;
