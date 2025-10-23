@@ -5,7 +5,7 @@ group by Id_medicamento
 order by "Cantidad total" DESC
 limit 5;
 
-Select Nombre as "Medicamento critico", stock as "Stock del medicamento"
+Select Nombre as "Medicamiento critico", stock as "Stock del medicamento"
 from Medicamentos
 where stock<10;
 
