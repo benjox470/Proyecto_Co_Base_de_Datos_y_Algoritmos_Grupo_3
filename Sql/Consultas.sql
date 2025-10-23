@@ -21,3 +21,19 @@ from Empleados;
 select Elementos_gondola.Descripcion , Medicamentos.Nombre
 from Elementos_gondola
 inner join Medicamentos on  Medicamentos.Id_medicamento=Elementos_gondola.Id_medicamentos;
+
+select *
+from Ventas;
+
+select *
+from Elementos_gondola;
+
+select
+empleados.id_empleado,
+empleados.nombre,
+empleados.sueldo,
+roles.nombre as rol
+sectores.nombre as sector
+from empleados
+inner join roles on empleados.id_role = roles.id_rol
+inner join sectores on empleados.sector = sectores.id_sector;
