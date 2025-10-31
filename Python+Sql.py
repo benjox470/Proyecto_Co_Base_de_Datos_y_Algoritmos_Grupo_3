@@ -25,12 +25,33 @@ def ConsultaInsertar(meds,clients,employes,datexd, cuantity):
     cnx.commit()
     return cursor.lastrowid
 ConectarBase()
+amox="personas alérgicas a la amoxicilina, a otras penicilinas o a antibióticos betalactámicos"
+sert="no debe utilizarse en personas con alergia a la sustancia o sus componentes, en menores de 6 años"
+peni="personas con antecedentes de alergias graves a este medicamento, especialmente anafilaxia, enfermedad del suero u otras reacciones alérgicas previas."
+flux="hipersensibilidad al fármaco y en combinación con inhibidores de la monoaminooxidasa (IMAO), y requiere precaución en varias condiciones médicas y situaciones especiales, incluyendo embarazo, lactancia, enfermedades hepáticas y trastornos psiquiátricos activos."
+orfi="hipersensibilidad a las benzodiacepinas, insuficiencia respiratoria grave, apnea del sueño, miastenia gravis y en ciertas condiciones del embarazo y lactancia."
+sintrom="sangrado activo, úlceras pépticas, insuficiencia hepática o renal grave, hipersensibilidad al acenocumarol, embarazo y ciertas condiciones médicas que aumentan el riesgo de hemorragia."
+nolotil="con alergia al metamizol, antecedentes de agranulocitosis, asma, problemas de médula ósea, porfiria hepática aguda, insuficiencia renal o hepática grave, embarazo en el tercer trimestre y lactancia."
 def dar_datos():
     medicamentos=int(input("Ingrese el id del mdeicamento que se vendio: "))
     clientes = int(input("Ingrese el id del cliente que compro: "))
     empleados = int(input("Ingrese el id del empleado que realizo la venta: "))
     fechas = (input("Ingrese la fecha y hora en la que se hizo la venta: "))
     cantidades=int(input("Ingrese la cantidad del producto que se compro: "))
+    if medicamentos==3:
+        print (amox)
+    elif medicamentos==4:
+        print(sert)
+    elif medicamentos==6:
+        print (peni)
+    elif medicamentos==7:
+        print (flux)
+    elif medicamentos==11:
+        print (orfi)
+    elif medicamentos==12:
+        print (sintrom)
+    elif medicamentos==15:
+        print(nolotil)
     ConsultaInsertar(medicamentos,clientes,empleados,fechas,cantidades)
 def Medicamentos():
     consulta="select * from Medicamentos;"
@@ -51,7 +72,6 @@ def Binario():
             if x==ingrese:
                 print (f"Este es el medicamento respectivo{Medsca[ingrese]}")
                 break
-Binario()
 def proximos_a_vencer():
     consulta="select * from Medicamentos order by fecha_caducidad ASC limit 3;"
     cursor.execute(consulta)
@@ -65,7 +85,6 @@ def crear_Archivo_Proximos_Vencer():
         Meds_prox_a_vencer[x]["fecha_produccion"] = str(Meds_prox_a_vencer[x]["fecha_produccion"])
     with open(nombre_archivo, 'w', encoding='utf-8') as archivo:
        json.dump(Meds_prox_a_vencer, archivo, indent=4, ensure_ascii=False)
-crear_Archivo_Proximos_Vencer()
 def ventas():
     consulta = "select Empleados.Nombre, count(Ventas.Id_venta) from Empleados inner join Ventas on Ventas.Id_Empleados=Empleados.Id_empleado group by Ventas.Id_Empleados;"
     cursor.execute(consulta)
@@ -75,4 +94,3 @@ def crear_Archivo_ventas():
     empleadiatos=ventas()
     with open(nombre_archivo2, 'w', encoding='utf-8') as archivo2:
        json.dump(empleadiatos, archivo2, indent=4, ensure_ascii=False)
-crear_Archivo_ventas()
