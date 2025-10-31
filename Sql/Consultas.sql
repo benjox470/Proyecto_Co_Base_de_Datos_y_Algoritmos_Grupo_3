@@ -32,8 +32,14 @@ select
 empleados.id_empleado,
 empleados.nombre,
 empleados.sueldo,
-roles.nombre as rol
+roles.descripcion as rol,
 sectores.nombre as sector
 from empleados
 inner join roles on empleados.id_role = roles.id_rol
 inner join sectores on empleados.sector = sectores.id_sector;
+
+
+select  medicamentos.Nombre, medicamentos.Precio,categorias.descripcion
+from medicamentos
+inner join categorias on categorias.Id_Categoria=medicamentos.Id_Cate
+where medicamentos.Id_Cate=3;
