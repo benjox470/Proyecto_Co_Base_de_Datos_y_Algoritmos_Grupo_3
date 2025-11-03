@@ -33,7 +33,7 @@ orfi="hipersensibilidad a las benzodiacepinas, insuficiencia respiratoria grave,
 sintrom="sangrado activo, úlceras pépticas, insuficiencia hepática o renal grave, hipersensibilidad al acenocumarol, embarazo y ciertas condiciones médicas que aumentan el riesgo de hemorragia."
 nolotil="con alergia al metamizol, antecedentes de agranulocitosis, asma, problemas de médula ósea, porfiria hepática aguda, insuficiencia renal o hepática grave, embarazo en el tercer trimestre y lactancia."
 def dar_datos():
-    medicamentos=int(input("Ingrese el id del mdeicamento que se vendio: "))
+    medicamentos=int(input("Ingrese el id del medicamento que se vendio: "))
     clientes = int(input("Ingrese el id del cliente que compro: "))
     empleados = int(input("Ingrese el id del empleado que realizo la venta: "))
     fechas = (input("Ingrese la fecha y hora en la que se hizo la venta: "))
@@ -160,5 +160,6 @@ def Menu():
         else:
             print ("Adios que tenga un buen dia")
             break
+
 
 Menu()
