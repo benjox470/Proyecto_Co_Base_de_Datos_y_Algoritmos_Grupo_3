@@ -5,7 +5,7 @@ import time
 cursor = None
 cnx = None
 
-def ConectarBase():
+def conectarBase():
     global cnx, cursor
     try:
         cnx = mysql.connector.connect(user="root", password="", host="Localhost", database="Farmacity")
@@ -19,12 +19,12 @@ def ConectarBase():
             print('La base de datos no existe!')
         else:
             print(err)
-def ConsultaInsertar(meds,clients,employes,datexd, cuantity):
+def consultaInsertar(meds,clients,employes,datexd, cuantity):
     sql = "INSERT INTO Ventas (Id_medicamentos,Id_Clientes,Id_Empleados,Fecha_yhora,cantidad)VALUES( %s, %s, %s, %s,%s)"
     cursor.execute(sql,(meds,clients,employes,datexd,cuantity))
     cnx.commit()
     return cursor.lastrowid
-ConectarBase()
+conectarBase()
 amox="personas alérgicas a la amoxicilina, a otras penicilinas o a antibióticos betalactámicos"
 sert="no debe utilizarse en personas con alergia a la sustancia o sus componentes, en menores de 6 años"
 peni="personas con antecedentes de alergias graves a este medicamento, especialmente anafilaxia, enfermedad del suero u otras reacciones alérgicas previas."
@@ -52,17 +52,17 @@ def dar_datos():
         print (sintrom)
     elif medicamentos==15:
         print(nolotil)
-    ConsultaInsertar(medicamentos,clientes,empleados,fechas,cantidades)
-def Medicamentos():
+    consultaInsertar(medicamentos,clientes,empleados,fechas,cantidades)
+def medicamentos():
     consulta="select * from Medicamentos;"
     cursor.execute(consulta)
     return cursor.fetchall()
-def Binario():
-    Medsca=Medicamentos()
+def binario():
+    Medsca=medicamentos()
     longitud=len(Medsca)
     Mitad=longitud//2
     ingrese=(int(input("Ingrese el id del ID el cual quiera verificar: ")))-1
-    if ingrese<=Mitad:
+    if ingrese<Mitad:
         for i in range (Mitad):
             if i==ingrese:
                 print (f"Este es el medicamento respectivo{Medsca[ingrese]}")
@@ -79,10 +79,7 @@ def proximos_a_vencer():
 def crear_Archivo_Proximos_Vencer():
     nombre_archivo = "Consulta1.json"
     Meds_prox_a_vencer = proximos_a_vencer()
-    for x in range (len(Meds_prox_a_vencer)):
-        Meds_prox_a_vencer[x]["Precio"] = int(Meds_prox_a_vencer[x]["Precio"])
-        Meds_prox_a_vencer[x]["fecha_caducidad"]=str(Meds_prox_a_vencer[x]["fecha_caducidad"])
-        Meds_prox_a_vencer[x]["fecha_produccion"] = str(Meds_prox_a_vencer[x]["fecha_produccion"])
+    Meds_prox_a_vencer=str(Meds_prox_a_vencer)
     with open(nombre_archivo, 'w', encoding='utf-8') as archivo:
        json.dump(Meds_prox_a_vencer, archivo, indent=4, ensure_ascii=False)
 def ventas():
@@ -96,7 +93,7 @@ def crear_Archivo_ventas():
        json.dump(empleadiatos, archivo2, indent=4, ensure_ascii=False)
 def sortear_meds():
     consulta="select Nombre, Precio, Stock from medicamentos where Id_Cate= "
-    categoria=str(input("Ingrese el id de la categoria que quiera buscar: "))
+    categoria=input("Ingrese el id de la categoria que quiera buscar: ")
     consulta=consulta+categoria+" ;"
     cursor.execute(consulta)
     return cursor.fetchall()
@@ -104,14 +101,14 @@ def mostrar_sortear():
     A_mostrar=sortear_meds()
     for i in range(len(A_mostrar)):
         print (A_mostrar[i])
-def Cod_barras():
+def cod_barras():
     consulta="select Nombre, Precio, Stock,codigo_barra from medicamentos where codigo_barra= "
-    barras=str(input("Ingrese el codigo de barras del producto: "))
+    barras=input("Ingrese el codigo de barras del producto: ")
     consulta=consulta+barras+" ;"
     cursor.execute(consulta)
     return cursor.fetchall()
 def mostrar_barras():
-    A_mostrar=Cod_barras()
+    A_mostrar=cod_barras()
     for i in range(len(A_mostrar)):
         print (A_mostrar[i])
 #Dar datos
@@ -121,8 +118,8 @@ def mostrar_barras():
 #mostrar_sortear
 #mostrar_barras
 def Menu():
-    counter=0
-    while counter==0:
+    counter=True
+    while counter==True:
         time.sleep(0.25)
         print("////////////////////////////////////////")
         time.sleep(0.25)
@@ -146,7 +143,7 @@ def Menu():
         if opcion==1:
             dar_datos()
         elif opcion==2:
-            Binario()
+            binario()
         elif opcion==3:
             crear_Archivo_Proximos_Vencer()
             print("Se ha creado el archivo correctamente")
@@ -159,7 +156,7 @@ def Menu():
             mostrar_barras()
         else:
             print ("Adios que tenga un buen dia")
-            break
+            counter=False
 
 
 Menu()
