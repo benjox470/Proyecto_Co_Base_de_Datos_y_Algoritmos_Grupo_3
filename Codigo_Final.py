@@ -31,39 +31,43 @@ def consultaInsertar(meds,clients,employes,datexd, cuantity):
     cnx.commit()
     return cursor.lastrowid
 conectarBase()
-amox="personas alérgicas a la amoxicilina, a otras penicilinas o a antibióticos betalactámicos"
-sert="no debe utilizarse en personas con alergia a la sustancia o sus componentes, en menores de 6 años"
-peni="personas con antecedentes de alergias graves a este medicamento, especialmente anafilaxia, enfermedad del suero u otras reacciones alérgicas previas."
-flux="hipersensibilidad al fármaco y en combinación con inhibidores de la monoaminooxidasa (IMAO), y requiere precaución en varias condiciones médicas y situaciones especiales, incluyendo embarazo, lactancia, enfermedades hepáticas y trastornos psiquiátricos activos."
-orfi="hipersensibilidad a las benzodiacepinas, insuficiencia respiratoria grave, apnea del sueño, miastenia gravis y en ciertas condiciones del embarazo y lactancia."
-sintrom="sangrado activo, úlceras pépticas, insuficiencia hepática o renal grave, hipersensibilidad al acenocumarol, embarazo y ciertas condiciones médicas que aumentan el riesgo de hemorragia."
-nolotil="con alergia al metamizol, antecedentes de agranulocitosis, asma, problemas de médula ósea, porfiria hepática aguda, insuficiencia renal o hepática grave, embarazo en el tercer trimestre y lactancia."
+def aplicar_contra_indicaciones():
+    #lista: donde se van a almacenar los diccionarios
+    #contraindicaciones=donde se guardan las contraindicaciones
+    #ids:donde se guardan los ids
+    #medicamento: diccionario base para crear los demas
+    lista=[]
+    contraindicaciones=["personas alérgicas a la amoxicilina, a otras penicilinas o a antibióticos betalactámicos","no debe utilizarse en personas con alergia a la sustancia o sus componentes, en menores de 6 años",
+                        "personas con antecedentes de alergias graves a este medicamento, especialmente anafilaxia, enfermedad del suero u otras reacciones alérgicas previas.","hipersensibilidad al fármaco y en combinación con inhibidores de la monoaminooxidasa (IMAO), y requiere precaución en varias condiciones médicas y situaciones especiales, incluyendo embarazo, lactancia, enfermedades hepáticas y trastornos psiquiátricos activos.",
+                        "hipersensibilidad a las benzodiacepinas, insuficiencia respiratoria grave, apnea del sueño, miastenia gravis y en ciertas condiciones del embarazo y lactancia.",
+                        "sangrado activo, úlceras pépticas, insuficiencia hepática o renal grave, hipersensibilidad al acenocumarol, embarazo y ciertas condiciones médicas que aumentan el riesgo de hemorragia.",
+                        "con alergia al metamizol, antecedentes de agranulocitosis, asma, problemas de médula ósea, porfiria hepática aguda, insuficiencia renal o hepática grave, embarazo en el tercer trimestre y lactancia."
+                        ]
+    ids=[3,4,6,7,11,12,15]
+    for i in range(len(ids)):
+        medicamento = {
+            "id": ids[i],
+            "contraindicacion": contraindicaciones[i]
+        }
+        lista.append(medicamento)
+    return lista
 def dar_datos():
-    #medicamentos: El id del medicamento
+    #medicament: El id del medicamento
     #clientes: El id del cliente
     #empleados: El id del empleado
     #fechas: La fecha y la hora de la venta
     #cantidades: La cantidad del producto vendido
-    medicamentos=int(input("Ingrese el id del medicamento que se vendio: "))
+    #contraindicaciones: Contiene la lista de diccionarios con las contraindicaciones
+    contraindicaciones=aplicar_contra_indicaciones()
+    medicament=int(input("Ingrese el id del medicamento que se vendio: "))
     clientes = int(input("Ingrese el id del cliente que compro: "))
     empleados = int(input("Ingrese el id del empleado que realizo la venta: "))
     fechas = input("Ingrese la fecha y hora en la que se hizo la venta: ")
     cantidades=int(input("Ingrese la cantidad del producto que se compro: "))
-    if medicamentos==3:
-        print (amox)
-    elif medicamentos==4:
-        print(sert)
-    elif medicamentos==6:
-        print (peni)
-    elif medicamentos==7:
-        print (flux)
-    elif medicamentos==11:
-        print (orfi)
-    elif medicamentos==12:
-        print (sintrom)
-    elif medicamentos==15:
-        print(nolotil)
-    consultaInsertar(medicamentos,clientes,empleados,fechas,cantidades)
+    for i in range (len(contraindicaciones)):
+        if contraindicaciones[i]["id"]==medicament:
+            print (contraindicaciones[i]["contraindicacion"])
+    consultaInsertar(medicament,clientes,empleados,fechas,cantidades)
 def medicamentos():
     #consulta: La consulta a la base de datos para tener los registros de la tabla medicamentos
     consulta="select * from Medicamentos;"
