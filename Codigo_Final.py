@@ -82,7 +82,7 @@ def dar_datos(Diccionario):
         medicament=int(input("Ingrese el id del medicamento que se vendio: "))
         clientes = int(input("Ingrese el id del cliente que compro: "))
         empleados = int(input("Ingrese el id del empleado que realizo la venta: "))
-        fechas = datetime.now()
+        fechas = datetime.datetime.now()
         cantidades=int(input("Ingrese la cantidad del producto que se compro: "))
         for i in range (len(Diccionario)):
             if Diccionario[i]["id"]==medicament:
