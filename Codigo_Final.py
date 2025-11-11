@@ -2,9 +2,10 @@ import mysql.connector
 import json
 from mysql.connector import errorcode
 import time
+import datetime
 cursor = None
 cnx = None
-
+#conectarbase: Conecta con la base de datos
 def conectarBase():
     global cnx, cursor
     try:
@@ -19,6 +20,8 @@ def conectarBase():
             print('La base de datos no existe!')
         else:
             print(err)
+
+#consultainsertar: Se usa de base para hacer los inserts a la tabla ventas
 def consultaInsertar(meds,clients,employes,datexd, cuantity):
     # meds: El id del medicamento
     #clients: El id del cliente
@@ -30,7 +33,8 @@ def consultaInsertar(meds,clients,employes,datexd, cuantity):
     cursor.execute(sql,(meds,clients,employes,datexd,cuantity))
     cnx.commit()
     return cursor.lastrowid
-conectarBase()
+
+#aplicar_contra_indicaciones: tiene la tabla con las contraindicaciones base.
 def aplicar_contra_indicaciones():
     #lista: donde se van a almacenar los diccionarios
     #contraindicaciones=donde se guardan las contraindicaciones
@@ -51,28 +55,50 @@ def aplicar_contra_indicaciones():
         }
         lista.append(medicamento)
     return lista
-def dar_datos():
+
+#add_contraindicaciones: Permite añadir contraindicaciones
+def add_contraindicaciones(Lista_original):
+    #ids: El id del medicamento a volver diccionario
+    #contraindicaciones: la contraindicacion del medicamento
+    #Lista_original: El diccionario original
+    ids=int(input("Ingrese el id del medicamento: "))
+    contraindicaciones=input("Ingrese la contraindicacion")
+    medicamento = {
+        "id": ids,
+        "contraindicacion": contraindicaciones
+    }
+    Lista_original.append(medicamento)
+    return Lista_original
+
+#dar_datos: Aqui el cajero da los datos para usando de base consulta insertar se hace un registro para la base de datos
+def dar_datos(Diccionario):
     #medicament: El id del medicamento
     #clientes: El id del cliente
     #empleados: El id del empleado
     #fechas: La fecha y la hora de la venta
     #cantidades: La cantidad del producto vendido
-    #contraindicaciones: Contiene la lista de diccionarios con las contraindicaciones
-    contraindicaciones=aplicar_contra_indicaciones()
-    medicament=int(input("Ingrese el id del medicamento que se vendio: "))
-    clientes = int(input("Ingrese el id del cliente que compro: "))
-    empleados = int(input("Ingrese el id del empleado que realizo la venta: "))
-    fechas = input("Ingrese la fecha y hora en la que se hizo la venta: ")
-    cantidades=int(input("Ingrese la cantidad del producto que se compro: "))
-    for i in range (len(contraindicaciones)):
-        if contraindicaciones[i]["id"]==medicament:
-            print (contraindicaciones[i]["contraindicacion"])
-    consultaInsertar(medicament,clientes,empleados,fechas,cantidades)
+    #Diccionario: Contiene la lista de diccionarios con las contraindicaciones
+    try:
+        medicament=int(input("Ingrese el id del medicamento que se vendio: "))
+        clientes = int(input("Ingrese el id del cliente que compro: "))
+        empleados = int(input("Ingrese el id del empleado que realizo la venta: "))
+        fechas = datetime.now()
+        cantidades=int(input("Ingrese la cantidad del producto que se compro: "))
+        for i in range (len(Diccionario)):
+            if Diccionario[i]["id"]==medicament:
+                print (f"El medicamento seleccionado cuenta con la siguiente contraindicacion: {Diccionario[i]['contraindicacion']}")
+        consultaInsertar(medicament,clientes,empleados,fechas,cantidades)
+    except Exception:
+        print ("Se ha equivocado en introducir los datos. Porfavor reintente la inserción")
+
+#medicamentos: Realiza una consulta para tener todo el diccionario de medicamentos
 def medicamentos():
     #consulta: La consulta a la base de datos para tener los registros de la tabla medicamentos
     consulta="select * from Medicamentos;"
     cursor.execute(consulta)
     return cursor.fetchall()
+
+#binario: Realiza una busqueda binaria usando de base el diccionario de la funcion medicamentos
 def binario():
     #Medsca: tiene los resultados de medicamentos, contando los registros
     #longitud: contiene el largo del diccionario de los medicamentos
@@ -93,11 +119,15 @@ def binario():
             if x==ingrese:
                 print (f"Este es el medicamento respectivo{Medsca[ingrese]}")
                 break
+
+#proximos_a_vencer: Realiza una consulta conteniendo los datos de los medicamentos proximos a vencer
 def proximos_a_vencer():
     #consulta: Selecciona los 3 medicamentos mas cercanos a vencer de la tabla sql
     consulta="select * from Medicamentos order by fecha_caducidad ASC limit 3;"
     cursor.execute(consulta)
     return cursor.fetchall()
+
+#crear_Archivo_Proximos_Vencer: Crea un archivo json con los datos de proximo a vencer
 def crear_Archivo_Proximos_Vencer():
     #nombre_archivo: El nombre del archivo a crear en formato json
     #Meds_prox_a_vencer: Es el diccionario generado por la funcion proximos a vencer, el cual despues vuelve
@@ -107,11 +137,15 @@ def crear_Archivo_Proximos_Vencer():
     Meds_prox_a_vencer=str(Meds_prox_a_vencer)
     with open(nombre_archivo, 'w', encoding='utf-8') as archivo:
        json.dump(Meds_prox_a_vencer, archivo, indent=4, ensure_ascii=False)
+
+#ventas: obtiene los datos de cuantas ventas se realizo por empleado
 def ventas():
     #consulta: seleciona los vendedores con su total de ventas
     consulta = "select Empleados.Nombre, count(Ventas.Id_venta) from Empleados inner join Ventas on Ventas.Id_Empleados=Empleados.Id_empleado group by Ventas.Id_Empleados;"
     cursor.execute(consulta)
     return cursor.fetchall()
+
+#crear_Archivo_ventas: Crea un archivo json con los datos de ventas
 def crear_Archivo_ventas():
     #nombre_archivo2: El nombre del archivo a crear en formato json
     #empleadiatos: Es el diccionario generado por la funcion ventas
@@ -119,6 +153,8 @@ def crear_Archivo_ventas():
     empleadiatos=ventas()
     with open(nombre_archivo2, 'w', encoding='utf-8') as archivo2:
        json.dump(empleadiatos, archivo2, indent=4, ensure_ascii=False)
+
+#sortear_meds: Se buscan medicamentos segun su categoria
 def sortear_meds():
     #consulta: es la que selecciona los datos de la tabla medicamentos por id de categoria
     #se completa despues de recibir el id de la categoria. Por eso se ve sin los datos y ;
@@ -129,12 +165,16 @@ def sortear_meds():
     consulta=consulta+categoria+" ;"
     cursor.execute(consulta)
     return cursor.fetchall()
+
+#mostrar_sortear: Se muestran los resultados de sortear_meds
 def mostrar_sortear():
     #A_mostrar: Contiene el diccionario generado por sortear_meds, que despues de muestra linea
     #por linea separado.
     A_mostrar=sortear_meds()
     for i in range(len(A_mostrar)):
         print (A_mostrar[i])
+
+#cod_barras: Se buscan medicamentos segun su codigo de barras
 def cod_barras():
     #consulta: Es la funcion que muestra los medicamentos segun su codigo de barras, le falta ese
     #dato ya que el cajero lo inserta y despues se añade.
@@ -145,22 +185,23 @@ def cod_barras():
     consulta=consulta+barras+" ;"
     cursor.execute(consulta)
     return cursor.fetchall()
+
+#mostrar_barras: Se muestran los datos de cod_barras
 def mostrar_barras():
     #A_mostrar: Muestra el diccionario del medicamento obtenido despues de haberlo buscado por
     #codigo de barra en la funcion cod_barras
     A_mostrar=cod_barras()
     print (A_mostrar)
-#Dar datos
-#Binario
-#crear_Archivo_Proximos_Vencer
-#crear_Archivo_ventas
-#mostrar_sortear
-#mostrar_barras
+
+#menu: Es el menu que contiene todas las funciones llamadas
 def menu():
     #counter: Es lo que permite que se repita indefinidamente, cambia de valor al terminarse de ejecutar
     #el programa
     #opcion: La seleccion del cajero para ver que es lo que requiere hacer
+    #contraindicaciones:Cuenta con el diccionario de contraindicaciones
+    conectarBase()
     counter=True
+    contraindicaciones = aplicar_contra_indicaciones()
     while counter==True:
         time.sleep(0.25)
         print("////////////////////////////////////////")
@@ -177,13 +218,15 @@ def menu():
         time.sleep(0.25)
         print("//    6. Seleccionar Meds por Barras   /")
         time.sleep(0.25)
+        print ("//   7. Para añadir contraindicaciones/")
+        time.sleep(0.25)
         print("//    Otro para salir                 //")
         time.sleep(0.25)
         print("////////////////////////////////////////")
         time.sleep(0.25)
         opcion=int (input(""))
         if opcion==1:
-            dar_datos()
+            dar_datos(contraindicaciones)
         elif opcion==2:
             binario()
         elif opcion==3:
@@ -196,6 +239,8 @@ def menu():
             mostrar_sortear()
         elif opcion==6:
             mostrar_barras()
+        elif opcion==7:
+            contraindicaciones=add_contraindicaciones(contraindicaciones)
         else:
             if cnx.is_connected():
                 cnx.close()
