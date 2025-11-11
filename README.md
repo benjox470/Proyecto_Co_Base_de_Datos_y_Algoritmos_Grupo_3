@@ -4,6 +4,6 @@ Integrantes:
 Joaquin Ferramola
 Benjamin Saragusti
 Nicolas Rosato
-Pablo Cardozo
+Cassandra Canzinos
 Santiago Pedraza
 Brayan Cardenas
