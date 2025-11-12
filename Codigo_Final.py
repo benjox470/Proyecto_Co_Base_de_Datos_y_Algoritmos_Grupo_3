@@ -193,7 +193,10 @@ def mostrar_barras():
     A_mostrar=cod_barras()
     print (A_mostrar)
 
+#cargar_datos_json: Guarda las contraindicaciones en un archivo json
 def cargar_datos_json():
+    #datos_cargados: Los datos del archivo json si se carga
+    #contraindications: En el caso de que el archivo no este se restaura la copia de seguridad.
     try:
         with open("Contraindicaciones.json", 'r', encoding='utf-8') as archivo:
             datos_cargados = json.load(archivo)
