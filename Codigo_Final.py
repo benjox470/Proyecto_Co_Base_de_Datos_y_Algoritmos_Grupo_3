@@ -62,7 +62,7 @@ def add_contraindicaciones(Lista_original):
     #contraindicaciones: la contraindicacion del medicamento
     #Lista_original: El diccionario original
     ids=int(input("Ingrese el id del medicamento: "))
-    contraindicaciones=input("Ingrese la contraindicacion")
+    contraindicaciones=input("Ingrese la contraindicacion: ")
     medicamento = {
         "id": ids,
         "contraindicacion": contraindicaciones
@@ -193,6 +193,18 @@ def mostrar_barras():
     A_mostrar=cod_barras()
     print (A_mostrar)
 
+def cargar_datos_json():
+    try:
+        with open("Contraindicaciones.json", 'r', encoding='utf-8') as archivo:
+            datos_cargados = json.load(archivo)
+        print ("Se ha cargado las contraindicaciones del archivo local")
+        return datos_cargados
+    except Exception:
+        contraindications=aplicar_contra_indicaciones()
+        print ("La carga ha fallado, se restaurara la copia predeterminada")
+        return contraindications
+
+
 #menu: Es el menu que contiene todas las funciones llamadas
 def menu():
     #counter: Es lo que permite que se repita indefinidamente, cambia de valor al terminarse de ejecutar
@@ -201,7 +213,7 @@ def menu():
     #contraindicaciones:Cuenta con el diccionario de contraindicaciones
     conectarBase()
     counter=True
-    contraindicaciones = aplicar_contra_indicaciones()
+    contraindicaciones = cargar_datos_json()
     while counter==True:
         time.sleep(0.25)
         print("////////////////////////////////////////")
@@ -241,11 +253,13 @@ def menu():
             mostrar_barras()
         elif opcion==7:
             contraindicaciones=add_contraindicaciones(contraindicaciones)
+            with open("Contraindicaciones.json", 'w', encoding='utf-8') as archivo:
+                json.dump(contraindicaciones, archivo, indent=4, ensure_ascii=False)
         else:
+            with open("Contraindicaciones.json", 'w', encoding='utf-8') as archivo:
+                json.dump(contraindicaciones, archivo, indent=4, ensure_ascii=False)
             if cnx.is_connected():
                 cnx.close()
             print ("Adios que tenga un buen dia")
             counter=False
-
-
 menu()
